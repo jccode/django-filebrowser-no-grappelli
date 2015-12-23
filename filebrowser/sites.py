@@ -213,8 +213,7 @@ class FileBrowserSite(object):
         from django.conf.urls import url, patterns
 
         # filebrowser urls (views)
-        urlpatterns = patterns(
-            '',
+        urlpatterns = [
             url(r'^browse/$', path_exists(self, filebrowser_view(self.browse)), name="fb_browse"),
             url(r'^createdir/', path_exists(self, filebrowser_view(self.createdir)), name="fb_createdir"),
             url(r'^upload/', path_exists(self, filebrowser_view(self.upload)), name="fb_upload"),
@@ -223,7 +222,7 @@ class FileBrowserSite(object):
             url(r'^detail/$', file_exists(self, path_exists(self, filebrowser_view(self.detail))), name="fb_detail"),
             url(r'^version/$', file_exists(self, path_exists(self, filebrowser_view(self.version))), name="fb_version"),
             url(r'^upload_file/$', staff_member_required(csrf_exempt(self._upload_file)), name="fb_do_upload"),
-        )
+        ]
         return urlpatterns
 
     def add_action(self, action, name=None):
@@ -357,7 +356,7 @@ class FileBrowserSite(object):
             'breadcrumbs': get_breadcrumbs(query, query.get('dir', '')),
             'breadcrumbs_title': "",
             'filebrowser_site': self
-        }, request), context_instance=Context(request, current_app=self.name))
+        }, request))
 
     def createdir(self, request):
         "Create Directory"
@@ -394,7 +393,7 @@ class FileBrowserSite(object):
             'breadcrumbs': get_breadcrumbs(query, query.get('dir', '')),
             'breadcrumbs_title': _(u'New Folder'),
             'filebrowser_site': self
-        }, request), context_instance=Context(request, current_app=self.name))
+        }, request))
 
     def upload(self, request):
         "Multipe File Upload."
@@ -408,7 +407,7 @@ class FileBrowserSite(object):
             'breadcrumbs': get_breadcrumbs(query, query.get('dir', '')),
             'breadcrumbs_title': _(u'Upload'),
             'filebrowser_site': self
-        }, request), context_instance=Context(request, current_app=self.name))
+        }, request))
 
     def delete_confirm(self, request):
         "Delete existing File/Directory."
@@ -442,7 +441,7 @@ class FileBrowserSite(object):
             'breadcrumbs': get_breadcrumbs(query, query.get('dir', '')),
             'breadcrumbs_title': _(u'Confirm delete'),
             'filebrowser_site': self
-        }, request), context_instance=Context(request, current_app=self.name))
+        }, request))
 
     def delete(self, request):
         "Delete existing File/Directory."
@@ -516,7 +515,7 @@ class FileBrowserSite(object):
             'breadcrumbs': get_breadcrumbs(query, query.get('dir', '')),
             'breadcrumbs_title': u'%s' % fileobject.filename,
             'filebrowser_site': self
-        }, request), context_instance=Context(request, current_app=self.name))
+        }, request))
 
     def version(self, request):
         """
@@ -532,7 +531,7 @@ class FileBrowserSite(object):
             'query': query,
             'settings_var': get_settings_var(directory=self.directory),
             'filebrowser_site': self
-        }, request), context_instance=Context(request, current_app=self.name))
+        }, request))
 
     def _upload_file(self, request):
         """
